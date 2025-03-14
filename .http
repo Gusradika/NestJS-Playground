@@ -1,4 +1,21 @@
 # The Basic Request
 # http://localhost:3000
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
 
-GET http://localhost:3000/tasks/123
+http://{{baseUrl}}
+
+GET http://{{baseUrl}}tasks/123
+
+
+### POST Request
+### Create New Task
+POST {{baseUrl}}/tasks
+Content-Type: : {{contentType}}
+
+{
+    "title": "Learn NestJS",
+    "description": "Complete the NestJS COurse",
+    "status": "OPEN",
+}

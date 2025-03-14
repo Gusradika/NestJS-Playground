@@ -4,10 +4,10 @@ import {
   NotFoundException,
   Param,
   Post,
+  Body,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ITask } from './task.model';
-import { CreateTaskDTO } from './create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -29,7 +29,7 @@ export class TasksController {
 
   @Post()
   public create(@Body() CreateTaskDTO: any) {
-    return this.TasksService.create(CreateTaskDTO);
+    return this.taskService.create(CreateTaskDTO);
   }
 }
 

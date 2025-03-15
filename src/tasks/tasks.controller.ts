@@ -9,7 +9,6 @@ import {
   HttpStatus,
   Delete,
   HttpCode,
-  HttpException,
   BadRequestException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';

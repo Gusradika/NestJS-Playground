@@ -6,9 +6,23 @@ import { MessageFormatterService } from './message-formatter/message-formatter.s
 import { LoggerService } from './logger/logger.service';
 import { TasksModule } from './tasks/tasks.module';
 import { TasksService } from './tasks/tasks.service';
+import { appConfig } from './config/app.config';
+import { ConfigModule } from '@nestjs/config';
+import { appConfigSchema } from './config/config.types';
+import { typeOrmConfig } from './config/database.config';
 
 @Module({
-  imports: [TasksModule],
+  imports: [
+    TasksModule,
+    ConfigModule.forRoot({
+      load: [appConfig, typeOrmConfig],
+      validationSchema: appConfigSchema,
+      validationOptions: {
+        // allowUnknown: false,
+        abortEarly: true,
+      },
+    }),
+  ],
   controllers: [AppController],
   providers: [
     AppService,

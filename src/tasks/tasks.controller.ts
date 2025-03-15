@@ -5,9 +5,13 @@ import {
   Param,
   Post,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ITask } from './task.model';
+import { CreateTaskDTO } from './create-task.dto';
+import { FindOneParams } from './find-one.params';
+import { UpdateTaskStatusDTO } from './update-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -19,27 +23,31 @@ export class TasksController {
   }
 
   @Get('/:id')
-  public findOne(@Param('id') id: string): ITask {
+  public findOne(@Param() params: FindOneParams): ITask {
+    return this.findOneOrFail(params.id);
+  }
+
+  private findOneOrFail(id: string): ITask {
     const task = this.taskService.findOne(id);
     if (task) {
       return task;
     }
+
     throw new NotFoundException();
   }
 
+  @Patch('/:id/status')
+  public updateTaskStatus(
+    @Param() params: FindOneParams,
+    @Body() body: UpdateTaskStatusDTO,
+  ): ITask {
+    const task = this.findOneOrFail(params.id);
+    task.status = body.status;
+    return task;
+  }
+
   @Post()
-  public create(@Body() CreateTaskDTO: any) {
-    return this.taskService.create(CreateTaskDTO);
+  public create(@Body() createTaskDTO: CreateTaskDTO) {
+    return this.taskService.create(createTaskDTO);
   }
 }
-
-//   Routing
-//   @Get('/:id')
-//   public findOne(@Param() params: any): string {
-//     return `The number is ${params.id}`;
-//   }
-//   Routing COntoh 2
-//   @Get('/:id')
-//   public findOne(@Param('id') id: string): string {
-//     return `The number is ${id}`;
-//   }
